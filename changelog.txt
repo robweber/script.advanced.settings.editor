@@ -1,5 +1,7 @@
 Version 0.0.2
 
+handled case where file is not present
+
 added use of language file
 
 Added child element addition and delete commands

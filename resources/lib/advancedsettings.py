@@ -11,10 +11,19 @@ class AdvancedSettings:
         #read in the file, or make a blank one if it doesn't exist            
         if(xbmcvfs.exists(self.as_file)):
             self.doc = minidom.parse(self.as_file)
+
+    def exists(self):
+        if(xbmcvfs.exists(self.as_file)):
+            return True
         else:
-            self.doc.minidom.Document()
-            topNode = self.doc.createElement('advancedsettings')
-            self.doc.appendchild(topNode)
+            return False
+
+    def createFile(self):
+        impl = minidom.getDOMImplementation()
+        
+        self.doc = impl.createDocument(None,"advancedsettings",None)
+        
+        self._writeFile()
 
     def listNodes(self,aNode = None):
         result = []

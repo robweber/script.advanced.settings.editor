@@ -13,5 +13,7 @@
 	<string id="30020">Are you sure you want to do this?</string>
 	<string id="30021">New Element Name</string>
 	<string id="30022">New Element Value (blank if none)</string>
+	<string id="30023">Advanced settings file not present</string>
+	<string id="30024">Would you like to make one?</string>
 	
 </strings>
