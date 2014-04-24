@@ -43,28 +43,65 @@ class AdvancedSettings:
         return foundNode
 
     def renameNode(self,node,newName):
-        #get the node from the dom
-        xmlNode = None
-
         #get the child
         childNode = self.doc.documentElement.getElementsByTagName(node.name)[0]
 
         childNode.tagName = newName
 
-        self.writeFile()
+        self._writeFile()
 
     def updateValue(self,node,newValue):
-        #get the node from the dom
-        xmlNode = None
-
+    
         #get the child
         childNode = self.doc.documentElement.getElementsByTagName(node.name)[0]
 
-        childNode.firstChild.nodeValue = newValue
+        #set a new value, or create one if blank
+        if(len(childNode.childNodes) > 0):
+            childNode.firstChild.nodeValue = newValue
+        else:
+            valueNode = self.doc.createTextNode(newValue)
+            childNode.appendChild(valueNode)
 
-        self.writeFile()
+        self._writeFile()
 
-    def writeFile(self):
+    def deleteNode(self,node):
+        #get the xml node from the dom
+        childNode = self.doc.documentElement.getElementsByTagName(node.name)[0]
+
+        #remove this node from the parent
+        parentNode = childNode.parentNode
+        parentNode.removeChild(childNode)
+
+        self._writeFile()
+
+    def addNode(self,parent,child):
+        parentNode = None
+
+        if(parent == 'advancedsettings'):
+            #hack in case we're already at the top
+            parentNode = self.doc.documentElement
+        else:
+            #get the parent from the dom
+            parentNode = self.doc.documentElement.getElementsByTagName(parent)[0]
+
+        #remove any text children from this node (if they exist)
+        if(len(parentNode.childNodes) == 1 and parentNode.firstChild.nodeType == self.doc.TEXT_NODE):
+            parentNode.removeChild(parentNode.firstChild)
+
+        childNode = self.doc.createElement(child.name)
+
+        #only add value if there is on
+        if(child.value != ''):
+            value = self.doc.createTextNode(child.value)
+            childNode.appendChild(value)
+
+        #add the child
+        parentNode.appendChild(childNode)
+
+        self._writeFile()
+        
+
+    def _writeFile(self):
         file = xbmcvfs.File(self.as_file,'w')
         file.write(str(self.doc.toxml()))
         file.close()
@@ -76,11 +113,13 @@ class AdvancedSettings:
             if(node.nodeType == self.doc.ELEMENT_NODE):
                 aSetting = SettingNode(node.nodeName)
 
-                if(len(node.childNodes) > 1):
+                if(len(node.childNodes) > 0 and node.firstChild.nodeType != self.doc.TEXT_NODE):
                     aSetting.hasChildren = True
-                else:
+                
+                if(len(node.childNodes) > 0 and node.firstChild.nodeType == self.doc.TEXT_NODE):
                     aSetting.value = node.childNodes[0].nodeValue
-                    aSetting.parent = node.parentNode.nodeName
+                        
+                aSetting.parent = node.parentNode.nodeName
                 
                 result.append(aSetting)
         return result

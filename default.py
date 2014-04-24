@@ -39,15 +39,16 @@ if(command == 0):
    topLevel = as_file.listNodes(params['node'])
    
    for node in topLevel:
+      utils.log(node.name + " " + str(node.hasChildren))
       if(node.hasChildren):
          #if this is a top level node of a larger set
          item = xbmcgui.ListItem(str(node.name),"")
-         item.addContextMenuItems([('Rename',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=2&node=" + node.name + "&parent=" + node.parent))])
+         item.addContextMenuItems(['Add Element',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=5&node=" + node.name + "&parent=" + node.parent)),('Add Child Element',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=6&node=" + node.name + "&parent=" + node.parent)),('Delete','Xbmc.RunPlugin(%s?%s)' % (sys.argv[0],"command=4&node=" + node.name + "&parent=" + node.parent)),('Rename',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=2&node=" + node.name + "&parent=" + node.parent))])
          ok = xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=context_url % (sys.argv[0],"command=0&node=" + node.name),listitem=item,isFolder=True)
       else:
          #if this is an item with a value
          item = xbmcgui.ListItem(str(node.name),"")
-         item.addContextMenuItems([('Change Value',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=3&node=" + node.name + "&parent=" + node.parent)),('Rename',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=2&node=" + node.name + "&parent=" + node.parent))])
+         item.addContextMenuItems([('Add Element',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=5&node=" + node.name + "&parent=" + node.parent)),('Add Child Element',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=6&node=" + node.name + "&parent=" + node.parent)),('Change Value',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=3&node=" + node.name + "&parent=" + node.parent)),('Delete','Xbmc.RunPlugin(%s?%s)' % (sys.argv[0],"command=4&node=" + node.name + "&parent=" + node.parent)),('Rename',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=2&node=" + node.name + "&parent=" + node.parent))])
 
          ok = xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=context_url % (sys.argv[0],"command=1&node=" + node.name + "&parent=" + node.parent),listitem=item,isFolder=False)
 
@@ -80,3 +81,36 @@ elif(command == 3):
 
    #refresh the view
    xbmc.executebuiltin('Container.Refresh')
+
+elif(command == 4):
+   #delete the selected node (if confirmed)
+   selectedNode = as_file.getNode(params['parent'],params['node'])
+   
+   confirm = xbmcgui.Dialog().yesno('Delete ' + selectedNode.name,"Are you sure you want to do this?")
+
+   if(confirm):
+      as_file.deleteNode(selectedNode)
+
+      #refresh the view
+      xbmc.executebuiltin('Container.Refresh')
+
+elif(command == 5 or command == 6):
+   #add an element
+   selectedNode = as_file.getNode(params['parent'],params['node'])
+
+   nodeName = xbmcgui.Dialog().input('New Element Name')
+   nodeValue = xbmcgui.Dialog().input('New Element Value (blank if none)')
+
+   newNode = SettingNode(nodeName)
+   newNode.value = nodeValue
+   newNode.parent = selectedNode.name
+
+   #add element to this node
+   if(command == 5):
+      as_file.addNode(selectedNode.parent,newNode)
+   else:
+      #add child element to selected node
+      as_file.addNode(selectedNode.name,newNode)
+
+   xbmc.executebuiltin('Container.Refresh')
+ 
