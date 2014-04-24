@@ -43,12 +43,12 @@ if(command == 0):
       if(node.hasChildren):
          #if this is a top level node of a larger set
          item = xbmcgui.ListItem(str(node.name),"")
-         item.addContextMenuItems(['Add Element',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=5&node=" + node.name + "&parent=" + node.parent)),('Add Child Element',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=6&node=" + node.name + "&parent=" + node.parent)),('Delete','Xbmc.RunPlugin(%s?%s)' % (sys.argv[0],"command=4&node=" + node.name + "&parent=" + node.parent)),('Rename',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=2&node=" + node.name + "&parent=" + node.parent))])
+         item.addContextMenuItems([(utils.getString(30001),"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=5&node=" + node.name + "&parent=" + node.parent)),(utils.getString(30002),"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=6&node=" + node.name + "&parent=" + node.parent)),(utils.getString(30004),'Xbmc.RunPlugin(%s?%s)' % (sys.argv[0],"command=4&node=" + node.name + "&parent=" + node.parent)),(utils.getString(30005),"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=2&node=" + node.name + "&parent=" + node.parent))])
          ok = xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=context_url % (sys.argv[0],"command=0&node=" + node.name),listitem=item,isFolder=True)
       else:
          #if this is an item with a value
          item = xbmcgui.ListItem(str(node.name),"")
-         item.addContextMenuItems([('Add Element',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=5&node=" + node.name + "&parent=" + node.parent)),('Add Child Element',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=6&node=" + node.name + "&parent=" + node.parent)),('Change Value',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=3&node=" + node.name + "&parent=" + node.parent)),('Delete','Xbmc.RunPlugin(%s?%s)' % (sys.argv[0],"command=4&node=" + node.name + "&parent=" + node.parent)),('Rename',"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=2&node=" + node.name + "&parent=" + node.parent))])
+         item.addContextMenuItems([(utils.getString(30001),"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=5&node=" + node.name + "&parent=" + node.parent)),(utils.getString(30002),"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=6&node=" + node.name + "&parent=" + node.parent)),(utils.getString(30003),"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=3&node=" + node.name + "&parent=" + node.parent)),(utils.getString(30004),'Xbmc.RunPlugin(%s?%s)' % (sys.argv[0],"command=4&node=" + node.name + "&parent=" + node.parent)),(utils.getString(30005),"Xbmc.RunPlugin(%s?%s)" % (sys.argv[0],"command=2&node=" + node.name + "&parent=" + node.parent))])
 
          ok = xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=context_url % (sys.argv[0],"command=1&node=" + node.name + "&parent=" + node.parent),listitem=item,isFolder=False)
 
@@ -58,13 +58,13 @@ elif(command == 1):
    #show information about the currently selected node
    selectedNode = as_file.getNode(params['parent'],params['node'])
 
-   xbmcgui.Dialog().ok(selectedNode.name,'Value: ' + selectedNode.value)
+   xbmcgui.Dialog().ok(selectedNode.name,utils.getString(30006) + ": " + selectedNode.value)
 
 elif(command == 2):
    #rename selected node
    selectedNode = as_file.getNode(params['parent'],params['node'])
    
-   newName = xbmcgui.Dialog().input('Rename ' + selectedNode.name)
+   newName = xbmcgui.Dialog().input(utils.getString(30005) + ' ' + selectedNode.name)
 
    as_file.renameNode(selectedNode,newName)
 
@@ -86,7 +86,7 @@ elif(command == 4):
    #delete the selected node (if confirmed)
    selectedNode = as_file.getNode(params['parent'],params['node'])
    
-   confirm = xbmcgui.Dialog().yesno('Delete ' + selectedNode.name,"Are you sure you want to do this?")
+   confirm = xbmcgui.Dialog().yesno(utils.getString(30004) + ' ' + selectedNode.name,utils.getString(30020))
 
    if(confirm):
       as_file.deleteNode(selectedNode)
@@ -98,8 +98,8 @@ elif(command == 5 or command == 6):
    #add an element
    selectedNode = as_file.getNode(params['parent'],params['node'])
 
-   nodeName = xbmcgui.Dialog().input('New Element Name')
-   nodeValue = xbmcgui.Dialog().input('New Element Value (blank if none)')
+   nodeName = xbmcgui.Dialog().input(utils.getString(30021))
+   nodeValue = xbmcgui.Dialog().input(utils.getString(30022))
 
    newNode = SettingNode(nodeName)
    newNode.value = nodeValue

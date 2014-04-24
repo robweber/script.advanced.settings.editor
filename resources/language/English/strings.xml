@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<strings>
+	<string id="30000">Advanced Settings Editor</string>
+	<string id="30001">Add Element</string>
+	<string id="30002">Add Child Element</string>
+	<string id="30003">Change Value</string>
+	<string id="30004">Delete</string>
+	<string id="30005">Rename</string>
+	<string id="30006">Value</string>
+	
+	
+	
+	<string id="30020">Are you sure you want to do this?</string>
+	<string id="30021">New Element Name</string>
+	<string id="30022">New Element Value (blank if none)</string>
+	
+</strings>
