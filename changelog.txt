@@ -1,3 +1,9 @@
+Version 0.0.2
+
+added use of language file
+
+Added child element addition and delete commands
+
 Version 0.0.1
 
 First version, can read values plus rename or change values
