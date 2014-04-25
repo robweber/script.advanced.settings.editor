@@ -61,8 +61,17 @@ class AdvancedSettings:
 
     def updateValue(self,node,newValue):
     
-        #get the child
-        childNode = self.doc.documentElement.getElementsByTagName(node.name)[0]
+        #get parent first
+        parentNode = None
+
+        if(node.parent == 'advancedsettings'):
+            #hack in case we're already at the top
+            parentNode = self.doc.documentElement
+        else:
+            #get the parent from the dom
+            parentNode = self.doc.documentElement.getElementsByTagName(node.parent)[0]
+            
+        childNode = parentNode.getElementsByTagName(node.name)[0]
 
         #set a new value, or create one if blank
         if(len(childNode.childNodes) > 0):
