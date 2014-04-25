@@ -122,11 +122,14 @@ class AdvancedSettings:
             if(node.nodeType == self.doc.ELEMENT_NODE):
                 aSetting = SettingNode(node.nodeName)
 
-                if(len(node.childNodes) > 0 and node.firstChild.nodeType != self.doc.TEXT_NODE):
-                    aSetting.hasChildren = True
-                
-                if(len(node.childNodes) > 0 and node.firstChild.nodeType == self.doc.TEXT_NODE):
-                    aSetting.value = node.childNodes[0].nodeValue
+                #detect if there are any element nodes
+                if(len(node.childNodes) > 0):
+                    for child_node in node.childNodes:
+                        if(child_node.nodeType == self.doc.ELEMENT_NODE):
+                            aSetting.hasChildren = True
+
+                if(not aSetting.hasChildren and len(node.childNodes) > 0):
+                    aSetting.value = node.firstChild.nodeValue
                         
                 aSetting.parent = node.parentNode.nodeName
                 
