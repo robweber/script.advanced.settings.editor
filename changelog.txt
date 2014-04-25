@@ -1,3 +1,11 @@
+Version 0.0.3
+
+add value to change value
+
+fix if two nodes with same name 
+
+fix if first node is text node, but elements after
+
 Version 0.0.2
 
 handled case where file is not present
