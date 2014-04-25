@@ -101,7 +101,7 @@ class EditorGUI:
          #change the selected node value
          selectedNode = self.as_file.getNode(self.params['parent'],self.params['node'])
          
-         newValue = xbmcgui.Dialog().input('New Value ' + selectedNode.name)
+         newValue = xbmcgui.Dialog().input('New Value ' + selectedNode.name,selectedNode.value)
 
          self.as_file.updateValue(selectedNode,newValue)
 
