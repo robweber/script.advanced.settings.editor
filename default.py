@@ -90,7 +90,7 @@ class EditorGUI:
          #rename selected node
          selectedNode = self.as_file.getNode(self.params['parent'],self.params['node'])
          
-         newName = xbmcgui.Dialog().input(utils.getString(30005) + ' ' + selectedNode.name)
+         newName = self._getInput(utils.getString(30005) + ' ' + selectedNode.name)
 
          self.as_file.renameNode(selectedNode,newName)
 
@@ -101,7 +101,7 @@ class EditorGUI:
          #change the selected node value
          selectedNode = self.as_file.getNode(self.params['parent'],self.params['node'])
          
-         newValue = xbmcgui.Dialog().input('New Value ' + selectedNode.name,selectedNode.value)
+         newValue = self._getInput('New Value ' + selectedNode.name,selectedNode.value)
 
          self.as_file.updateValue(selectedNode,newValue)
 
@@ -122,8 +122,8 @@ class EditorGUI:
 
       elif(command == 5 or command == 6):
          #add an element
-         nodeName = xbmcgui.Dialog().input(utils.getString(30021))
-         nodeValue = xbmcgui.Dialog().input(utils.getString(30022))
+         nodeName = self._getInput(utils.getString(30021))
+         nodeValue = self._getInput(utils.getString(30022))
 
          newNode = SettingNode(nodeName)
          newNode.value = nodeValue
@@ -137,6 +137,16 @@ class EditorGUI:
             self.as_file.addNode(self.params['node'],newNode)
 
          xbmc.executebuiltin('Container.Refresh')
+
+   def _getInput(self,title,default = ""):
+        result = None
+        keyboard = xbmc.Keyboard(default,title)
+        keyboard.doModal()
+
+        if(keyboard.isConfirmed()):
+            result = keyboard.getText()
+
+        return result
 
 
 params = get_params()
