@@ -1,3 +1,7 @@
+Version 0.0.4
+
+catch parse errors
+
 Version 0.0.3
 
 add value to change value

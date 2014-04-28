@@ -47,6 +47,9 @@ class EditorGUI:
          else:
             #don't continue
             result = False
+      else:
+         #try and load the file
+         result = self.as_file.readFile()
 
       return result
 
@@ -146,4 +149,5 @@ gui = EditorGUI(params)
 if(gui.shouldRun()):
    gui.showGUI()
 else:
+   xbmcgui.Dialog().ok(utils.getString(30025),utils.getString(30026))
    xbmcplugin.endOfDirectory(int(sys.argv[1]),cacheToDisc=False)

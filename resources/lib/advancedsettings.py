@@ -1,16 +1,11 @@
 import xbmc,xbmcvfs
 from xml.dom import minidom
+from xml.parsers.expat import ExpatError
 import utils as utils
 
 class AdvancedSettings:
     as_file = xbmc.translatePath('special://home/userdata/advancedsettings.xml')
     doc = None
-    
-    def __init__(self):
-
-        #read in the file, or make a blank one if it doesn't exist            
-        if(xbmcvfs.exists(self.as_file)):
-            self.doc = minidom.parse(self.as_file)
 
     def exists(self):
         if(xbmcvfs.exists(self.as_file)):
@@ -24,6 +19,20 @@ class AdvancedSettings:
         self.doc = impl.createDocument(None,"advancedsettings",None)
         
         self._writeFile()
+
+    def readFile(self):
+        result = True #assume success
+
+        #read in the file
+        if(xbmcvfs.exists(self.as_file)):
+
+            try:
+                self.doc = minidom.parse(self.as_file)
+            except ExpatError:
+                utils.log("can't read file")
+                result = False
+
+        return result
 
     def listNodes(self,aNode = None):
         result = []
