@@ -15,5 +15,7 @@
 	<string id="30022">New Element Value (blank if none)</string>
 	<string id="30023">Advanced settings file not present</string>
 	<string id="30024">Would you like to make one?</string>
+	<string id="30025">Problem loading file</string>
+	<string id="30026">advancedsettings.xml does not exist or cannot be parsed</string>
 	
 </strings>
