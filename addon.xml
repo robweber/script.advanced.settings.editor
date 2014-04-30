@@ -10,9 +10,9 @@
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Edit your advanced settings file through a GUI</summary>
     <description lang="en">Modifying the advancedsettingsfile for most people is a major pain. For many systems it involves using an SSH client to get into the machine, or figuring out some way to copy the file to the box and the right directory. Now you can edit your advancedsettings file from within XBMC through an easy interface. Use the xbmc wiki to find the correct settings/value pairs. </description>
-    <forum></forum>
-    <source></source>
-	<website></website>
+    <forum>http://forum.xbmc.org/showthread.php?tid=193118</forum>
+    <source>https://github.com/robweber/script.advanced.settings.editor</source>
+	<website>https://github.com/robweber/script.advanced.settings.editor</website>
     <license>The MIT License</license>
     <platform>all</platform>
     <language></language>
